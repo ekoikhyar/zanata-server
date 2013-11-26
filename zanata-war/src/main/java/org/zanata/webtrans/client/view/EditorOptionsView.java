@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, Red Hat, Inc. and individual contributors as indicated by the
+ * Copyright 2013, Red Hat, Inc. and individual contributors as indicated by the
  * @author tags. See the copyright.txt file in the distribution for a full
  * listing of individual contributors.
  *
@@ -20,6 +20,8 @@
  */
 package org.zanata.webtrans.client.view;
 
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import org.zanata.webtrans.client.presenter.UserConfigHolder;
 import org.zanata.webtrans.client.resources.UiMessages;
 import org.zanata.webtrans.client.resources.WebTransMessages;
@@ -67,11 +69,14 @@ public class EditorOptionsView extends Composite implements
     @UiField
     WebTransMessages messages;
 
+    @UiField
+    HTMLPanel sourceLangListBoxContainer;
+
     private Listener listener;
 
     @Inject
-    public EditorOptionsView(NavOptionRenderer navOptionRenderer,
-            UiMessages uiMessages) {
+    public EditorOptionsView(WebTransMessages messages,
+            NavOptionRenderer navOptionRenderer, UiMessages uiMessages) {
         initWidget(uiBinder.createAndBindUi(this));
         navOptionGroup =
                 new EnumRadioButtonGroup<NavOption>("navOption",
@@ -182,6 +187,12 @@ public class EditorOptionsView extends Composite implements
             ValueChangeEvent<Boolean> event) {
         listener.onDisplayTransUnitDetailsOptionChanged(showOptionalTransUnitDetailsChk
                 .getValue());
+    }
+
+    @Override
+    public void setSourceLangListBox(IsWidget sourceLangListBoxView) {
+        sourceLangListBoxContainer.clear();
+        sourceLangListBoxContainer.add(sourceLangListBoxView);
     }
 
     @Override

@@ -26,8 +26,6 @@ public class SideMenuView extends Composite implements SideMenuDisplay {
 
     interface Styles extends CssResource {
         String selectedButton();
-
-        String alertTab();
     }
 
     @UiField
@@ -119,9 +117,9 @@ public class SideMenuView extends Composite implements SideMenuDisplay {
     @Override
     public void setChatTabAlert(boolean alert) {
         if (alert) {
-            chatTab.addStyleName(style.alertTab());
+            chatTab.addStyleName("txt--unsure");
         } else {
-            chatTab.removeStyleName(style.alertTab());
+            chatTab.removeStyleName("txt--unsure");
         }
     }
 
