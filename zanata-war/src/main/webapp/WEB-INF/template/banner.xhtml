@@ -1,4 +1,4 @@
-<header role="banner" class="bg--pop-highest txt--s-align-center"
+<header role="banner" class="header bg--highest"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
@@ -8,12 +8,12 @@
   xmlns:rich="http://richfaces.org/rich">
 
   <a href="#off-canvas--left"
-    class="off-canvas__toggle--left is-hidden--m-up l--float-left">
+    class="off-canvas__toggle--left is-hidden--m-up header__main-nav__toggle">
     <i class="i i--huge i--list"></i>
     <span class="is-invisible">#{messages['jsf.Menu']}</span>
   </a>
 
-  <h1 class="header__title heading--sub">
+  <h1 class="header__title">
     <s:link view="/home.xhtml" propagation="none" id="home">
       <img class="header__site-logo"
         src="#{applicationConfiguration.webAssetsUrl}/logo.svg"/>
@@ -21,18 +21,85 @@
     </s:link>
   </h1>
 
-  <s:fragment rendered="#{identity.loggedIn and personHome.instance.account.enabled}">
-    <a href="#off-canvas--right" id="user_avatar"
-      class="off-canvas__toggle--right l--float-right"
-      title="#{personHome.instance.account.username}">
-      <i class="i i--huge i--list l--float-left l--pad-left-0"></i>
-      <span class="badge__container">
-        <span class="badge--bl"><!--  This is for notification count --></span>
-        <img src="#{gravatarServiceImpl.getUserImageUrl(72)}"
-          alt="#{personHome.instance.name}"/>
-      </span>
-    </a>
+  <nav id="nav-main" class="header__main-nav is-hidden--s">
+    <form action="" class="form--search header__search js-form--search">
+      <label class="form--search__label"
+        for="form--search">Search Projects</label>
+      <input type="text" class="form--search__input js-form--search__input"
+        id="form--search" placeholder="Search projects"/>
+      <button class="form--search__submit button--link js-form--search__button"
+        type="submit"><i class="i i--search"></i></button>
+    </form>
+
+    <ul class="header__main-nav__menu">
+      <li>
+        <s:link id="projects_link" view="/project/home.xhtml"
+          propagation="none">#{messages['jsf.Projects']}</s:link>
+      </li>
+      <li>
+        <s:link id="version-groups_link" view="/version-group/home.xhtml"
+          propagation="none">#{messages['jsf.Groups']}</s:link>
+      </li>
+      <li>
+        <s:link id="languages_link" view="/language/home.xhtml"
+          propagation="none">#{messages['jsf.Languages']}</s:link>
+      </li>
+      <s:fragment rendered="#{identity.loggedIn}">
+        <li>
+          <s:link id="glossary_link" view="/glossary/view.xhtml"
+            propagation="none">#{messages['jsf.Glossary']}</s:link>
+        </li>
+      </s:fragment>
+
+      <li>
+        <s:link id="help_link" view="/help/view.xhtml"
+          propagation="none">#{messages['jsf.Help']}</s:link>
+      </li>
+    </ul>
+  </nav>
+
+  <s:fragment
+    rendered="#{identity.loggedIn and personHome.instance.account.enabled}">
+    <nav class="header__user-nav js-dropdown">
+      <a href="#nav-user" class="header__user-nav__toggle js-dropdown__toggle"
+        title="#{personHome.instance.account.username}">
+        <div class="badge__container">
+          <div class="bx--round header__avatar">
+            <img src="#{gravatarServiceImpl.getUserImageUrl(72)}"
+              alt="#{personHome.instance.name}"/>
+          </div>
+        </div>
+      </a>
+      <ul id="nav-user" class="header__user-nav__menu js-dropdown__content">
+        <li>
+          <s:link id="dashboard" view="/dashboard/home.xhtml"
+            propagation="none">
+            <i class="i i--user"></i> #{messages['jsf.Dashboard']}
+          </s:link>
+        </li>
+        <li>
+          <s:link id="profile" view="/profile/view.xhtml" propagation="none">
+            <i class="i i--settings"></i> #{messages['jsf.Settings']}
+          </s:link>
+        </li>
+        <s:fragment rendered="#{s:hasRole('admin')}">
+          <li>
+            <s:link id="administration" view="/admin/home.xhtml"
+              propagation="none">
+              <i class="i i--user"></i> #{messages['jsf.Administration']}
+            </s:link>
+          </li>
+        </s:fragment>
+        <li>
+          <s:link id="right_menu_sign_out_link" view="/account/logout.seam"
+            propagation="none">
+            <i class="i i--cancel"></i> #{messages['jsf.Logout']}
+          </s:link>
+        </li>
+      </ul>
+    </nav>
   </s:fragment>
+
   <s:fragment rendered="#{not identity.loggedIn}">
     <s:div styleClass="header__login l--float-right">
       <s:link id="register_link_internal_auth" view="/account/register.xhtml"
@@ -62,30 +129,4 @@
     </s:div>
   </s:fragment>
 
-  <nav id="nav-main" class="header__menu is-hidden--s l--push-left-half">
-    <ul class="list--horizontal">
-      <li class="l--push-left-half">
-        <s:link id="projects_link" view="/project/home.xhtml"
-          propagation="none">#{messages['jsf.Projects']}</s:link>
-      </li>
-      <li class="l--push-left-half">
-        <s:link id="version-groups_link" view="/version-group/home.xhtml"
-          propagation="none">#{messages['jsf.Groups']}</s:link>
-      </li>
-      <li class="l--push-left-half">
-        <s:link id="languages_link" view="/language/home.xhtml"
-          propagation="none">#{messages['jsf.Languages']}</s:link>
-      </li>
-      <s:fragment rendered="#{identity.loggedIn}">
-        <li class="l--push-left-half">
-          <s:link id="glossary_link" view="/glossary/view.xhtml"
-            propagation="none">#{messages['jsf.Glossary']}</s:link>
-        </li>
-      </s:fragment>
-
-      <li class="l--push-left-half"><s:link id="help_link"
-        view="/help/view.xhtml"
-        propagation="none">#{messages['jsf.Help']}</s:link></li>
-    </ul>
-  </nav>
 </header>
