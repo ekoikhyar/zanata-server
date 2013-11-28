@@ -5,7 +5,6 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:rich="http://richfaces.org/rich"
   xmlns:a4j="http://richfaces.org/a4j"
   xmlns:zanata="http://java.sun.com/jsf/composite/zanata"
   template="../WEB-INF/template/template.xhtml">
@@ -90,13 +89,15 @@
   }
 </script>
 
-<a4j:jsFunction name="refreshStatistics"
-  action="#{versionGroupHomeAction.resetPageData}"
-  render="overall_statistic,languages-language_form,languages-project_list,language-label,projects-project_form,projects-language_list,project-label,languages-size,projects-size,pageMessages"/>
+<h:form>
+  <a4j:jsFunction name="refreshStatistics"
+    action="#{versionGroupHomeAction.resetPageData}"
+    render="overall_statistic,languages-language_form,languages-project_list,language-label,projects-project_form,projects-language_list,project-label,languages-size,projects-size,pageMessages"/>
 
-<a4j:jsFunction name="renderStatistics"
-  render="overall_statistic, languages-language_form, projects-project_form"
-  action="#{versionGroupHomeAction.setPageRendered(true)}"/>
+  <a4j:jsFunction name="renderStatistics"
+    render="overall_statistic, languages-language_form, projects-project_form"
+    action="#{versionGroupHomeAction.setPageRendered(true)}"/>
+</h:form>
 
 <div class="g">
   <div class="g__item w--1-2-m w--3-8-l w--1-3 l--push-bottom-1">

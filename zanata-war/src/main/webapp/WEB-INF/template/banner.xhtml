@@ -5,7 +5,8 @@
   xmlns:a="http://richfaces.org/a4j"
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:s="http://jboss.org/schema/seam/taglib"
-  xmlns:rich="http://richfaces.org/rich">
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:a4j="http://richfaces.org/a4j">
 
   <a href="#off-canvas--left"
     class="off-canvas__toggle--left is-hidden--m-up header__main-nav__toggle">
@@ -22,14 +23,33 @@
   </h1>
 
   <nav id="nav-main" class="header__main-nav is-hidden--s">
-    <form action="" class="form--search header__search js-form--search">
-      <label class="form--search__label"
-        for="form--search">Search Projects</label>
-      <input type="text" class="form--search__input js-form--search__input"
-        id="form--search" placeholder="Search projects"/>
-      <button class="form--search__submit button--link js-form--search__button"
-        type="submit"><i class="i i--search"></i></button>
-    </form>
+    <h:form styleClass="form--search header__search js-form--search">
+      <h:outputLabel
+        for="form--search" styleClass="form--search__label">
+        #{messages['jsf.SearchProjects']}
+      </h:outputLabel>
+
+      <rich:autocomplete mode="ajax" var="suggestProject"
+        minChars="2"
+        styleClass="auto-complete form--search__input js-form--search__input"
+        autocompleteMethod="#{projectSearch.suggestProjects}"
+        fetchValue="#{suggestProject.slug}" layout="list"
+        value="#{suggestProject.searchQuery}"
+        popupClass="auto-complete-list" id="form--search">
+
+        <s:link value="#{suggestProject.name}" propagation="none"
+          view="/project/project.xhtml">
+          <f:param name="slug" value="#{suggestProject.slug}"/>
+        </s:link>
+
+      </rich:autocomplete>
+
+
+      <a4j:commandLink action="#{projectSearch.search}"
+        styleClass="header__search__submit form--search__submit js-form--search__button">
+        <i class="i i--search"></i>
+      </a4j:commandLink>
+    </h:form>
 
     <ul class="header__main-nav__menu">
       <li>

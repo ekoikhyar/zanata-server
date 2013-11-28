@@ -229,8 +229,8 @@ public class ProjectDAO extends AbstractDAOImpl<HProject, Long> {
         return totalCount.intValue();
     }
 
-    public List<HProject> searchQuery(String searchQuery, int maxResult,
-            int firstResult) throws ParseException {
+    public List<HProject> searchQuery(@Nonnull String searchQuery,
+            int maxResult, int firstResult) throws ParseException {
         String[] projectFields = { "slug", "name", "description" };
         QueryParser parser =
                 new MultiFieldQueryParser(Version.LUCENE_35, projectFields,

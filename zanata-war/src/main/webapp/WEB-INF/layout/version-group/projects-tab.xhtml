@@ -57,28 +57,28 @@
               styleClass="bx--block">
               <div class="list__item">
                 <div class="list__item__info">
-                        <span class="list__title">
-                          #{version.project.slug} <i
-                          class="i i--version"></i> #{version.slug}
+                  <span class="list__title">
+                    #{version.project.slug} <i
+                    class="i i--version"></i> #{version.slug}
 
-                          <a4j:outputPanel
-                            rendered="#{!versionGroupHomeAction.getMissingLocale(version).isEmpty()}"
-                            styleClass="badge--danger"
-                            title="#{versionGroupHomeAction.getMissingLocaleTitle(version)}">
-                            #{versionGroupHomeAction.getMissingLocale(version).size()}
-                          </a4j:outputPanel>
-                        </span>
+                    <a4j:outputPanel
+                      rendered="#{!versionGroupHomeAction.getMissingLocale(version).isEmpty()}"
+                      styleClass="badge--danger"
+                      title="#{versionGroupHomeAction.getMissingLocaleTitle(version)}">
+                      #{versionGroupHomeAction.getMissingLocale(version).size()}
+                    </a4j:outputPanel>
+                  </span>
                 </div>
                 <s:div styleClass="list__item__stats"
                   rendered="#{versionGroupHomeAction.pageRendered}">
-                         <span class="stats--small txt--state-neutral">
-                            <span class="stats__figure">
-                              ${versionGroupHomeAction.getStatisticFigureForProject(versionGroupHomeAction.projectSortingList.selectedSortOption, version.id)}
-                            </span>
-                            <span class="stats__unit txt--lowercase">
-                              ${versionGroupHomeAction.getStatisticUnit(versionGroupHomeAction.projectSortingList.selectedSortOption)}
-                            </span>
-                          </span>
+                   <span class="stats--small txt--state-neutral">
+                      <span class="stats__figure">
+                        ${versionGroupHomeAction.getStatisticFigureForProject(versionGroupHomeAction.projectSortingList.selectedSortOption, version.id)}
+                      </span>
+                      <span class="stats__unit txt--lowercase">
+                        ${versionGroupHomeAction.getStatisticUnit(versionGroupHomeAction.projectSortingList.selectedSortOption)}
+                      </span>
+                    </span>
                 </s:div>
               </div>
               <zanata:statistic
@@ -159,47 +159,45 @@
             class="progress-bar__expander panels__panel__item bg--highest--hover">
             <div class="list__item">
               <div class="list__item__info">
-                      <span class="list__title">
-                        <h:outputLink
-                          value="#{request.contextPath}/webtrans/Application.seam"
-                          rendered="#{versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
-                          <f:param name="project"
-                            value="#{versionGroupHomeAction.selectedVersion.project.slug}"/>
-                          <f:param name="iteration"
-                            value="#{versionGroupHomeAction.selectedVersion.slug}"/>
-                          <f:param name="localeId"
-                            value="#{hLocale.localeId}"/>
-                          <f:param name="locale"
-                            value="#{locale.language}"/>
-                          ${hLocale.retrieveDisplayName()}
-                        </h:outputLink>
+                <span class="list__title">
+                  <h:outputLink
+                    value="#{request.contextPath}/webtrans/Application.seam"
+                    rendered="#{versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
+                    <f:param name="project"
+                      value="#{versionGroupHomeAction.selectedVersion.project.slug}"/>
+                    <f:param name="iteration"
+                      value="#{versionGroupHomeAction.selectedVersion.slug}"/>
+                    <f:param name="localeId" value="#{hLocale.localeId}"/>
+                    <f:param name="locale" value="#{locale.language}"/>
+                    ${hLocale.retrieveDisplayName()}
+                  </h:outputLink>
 
-                        <s:fragment
-                          rendered="#{!versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
-                          ${hLocale.retrieveDisplayName()}
-                        </s:fragment>
+                  <s:fragment
+                    rendered="#{!versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
+                    ${hLocale.retrieveDisplayName()}
+                  </s:fragment>
 
-                        <s:link view="/iteration/view.xhtml"
-                          rendered="#{!versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
-                          <f:param name="projectSlug"
-                            value="#{versionGroupHomeAction.selectedVersion.project.slug}"/>
-                          <f:param name="iterationSlug"
-                            value="#{versionGroupHomeAction.selectedVersion.slug}"/>
-                          <span
-                            class="badge--danger">#{messages['jsf.Missing']}</span>
-                        </s:link>
+                  <s:link view="/iteration/view.xhtml"
+                    rendered="#{!versionGroupHomeAction.isLocaleActivatedInVersion(versionGroupHomeAction.selectedVersion, hLocale.localeId)}">
+                    <f:param name="projectSlug"
+                      value="#{versionGroupHomeAction.selectedVersion.project.slug}"/>
+                    <f:param name="iterationSlug"
+                      value="#{versionGroupHomeAction.selectedVersion.slug}"/>
+                    <span
+                      class="badge--danger">#{messages['jsf.Missing']}</span>
+                  </s:link>
 
-                      </span>
+                </span>
               </div>
               <div class="list__item__stats">
-                      <span class="stats--small">
-                        <span class="stats__figure">
-                          ${versionGroupHomeAction.getStatisticFigureForProjectWithLocale(versionGroupHomeAction.languageSortingList.selectedSortOption, hLocale.localeId, versionGroupHomeAction.selectedVersion.id)}
-                        </span>
-                        <span class="stats__unit txt--lowercase">
-                          ${versionGroupHomeAction.getStatisticUnit(versionGroupHomeAction.languageSortingList.selectedSortOption)}
-                        </span>
-                      </span>
+                <span class="stats--small">
+                  <span class="stats__figure">
+                    ${versionGroupHomeAction.getStatisticFigureForProjectWithLocale(versionGroupHomeAction.languageSortingList.selectedSortOption, hLocale.localeId, versionGroupHomeAction.selectedVersion.id)}
+                  </span>
+                  <span class="stats__unit txt--lowercase">
+                    ${versionGroupHomeAction.getStatisticUnit(versionGroupHomeAction.languageSortingList.selectedSortOption)}
+                  </span>
+                </span>
               </div>
             </div>
             <zanata:statistic
