@@ -1,18 +1,9 @@
 <header role="banner" class="header bg--highest"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:a="http://richfaces.org/a4j"
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:s="http://jboss.org/schema/seam/taglib"
-  xmlns:rich="http://richfaces.org/rich"
-  xmlns:a4j="http://richfaces.org/a4j">
-
-  <a href="#off-canvas--left"
-    class="off-canvas__toggle--left is-hidden--m-up header__main-nav__toggle">
-    <i class="i i--huge i--list"></i>
-    <span class="is-invisible">#{messages['jsf.Menu']}</span>
-  </a>
+  xmlns:rich="http://richfaces.org/rich">
 
   <h1 class="header__title">
     <s:link view="/home.xhtml" propagation="none" id="home">
@@ -22,60 +13,76 @@
     </s:link>
   </h1>
 
-  <nav id="nav-main" class="header__main-nav is-hidden--s">
-    <h:form styleClass="form--search header__search js-form--search">
-      <h:outputLabel
-        for="form--search" styleClass="form--search__label">
-        #{messages['jsf.SearchProjects']}
-      </h:outputLabel>
+  <nav id="nav-main" class="header__main-nav js-dropdown">
+    <a href="#nav-main" class="header__main-nav__toggle js-dropdown__toggle">
+      <i class="i i--huge i--list"></i>
+      <span class="is-invisible">#{messages['jsf.Menu']}</span>
+    </a>
 
-      <rich:autocomplete mode="ajax" var="suggestProject"
-        minChars="2"
-        styleClass="auto-complete form--search__input js-form--search__input"
-        autocompleteMethod="#{projectSearch.suggestProjects}"
-        fetchValue="#{suggestProject.slug}" layout="list"
-        value="#{suggestProject.searchQuery}"
-        popupClass="auto-complete-list" id="form--search">
+    <div class="header__main-nav__group js-dropdown__content">
+      <h:form styleClass="form--search header__search js-form--search">
+        <h:outputLabel
+          for="form--search" styleClass="form--search__label">
+          #{messages['jsf.SearchProjects']}
+        </h:outputLabel>
 
-        <s:link value="#{suggestProject.name}" propagation="none"
-          view="/project/project.xhtml">
-          <f:param name="slug" value="#{suggestProject.slug}"/>
-        </s:link>
+        <rich:autocomplete mode="ajax" var="suggestProject"
+          minChars="2" inputClass="form--search__input js-form--search__input"
+          styleClass="auto-complete" fetchValue="#{suggestProject.query}"
+          autocompleteMethod="#{projectSearch.suggestProjects}"
+          layout="list"
+          popupClass="auto-complete-list" id="form--search">
 
-      </rich:autocomplete>
+          <s:link value="#{suggestProject.project.name}" propagation="none"
+            view="/project/project.xhtml"
+            rendered="#{!suggestProject.isProjectNull()}">
+            <f:param name="slug" value="#{suggestProject.project.slug}"/>
+          </s:link>
 
-
-      <a4j:commandLink action="#{projectSearch.search}"
-        styleClass="header__search__submit form--search__submit js-form--search__button">
-        <i class="i i--search"></i>
-      </a4j:commandLink>
-    </h:form>
-
-    <ul class="header__main-nav__menu">
-      <li>
-        <s:link id="projects_link" view="/project/home.xhtml"
-          propagation="none">#{messages['jsf.Projects']}</s:link>
-      </li>
-      <li>
-        <s:link id="version-groups_link" view="/version-group/home.xhtml"
-          propagation="none">#{messages['jsf.Groups']}</s:link>
-      </li>
-      <li>
-        <s:link id="languages_link" view="/language/home.xhtml"
-          propagation="none">#{messages['jsf.Languages']}</s:link>
-      </li>
-      <s:fragment rendered="#{identity.loggedIn}">
+          <s:link view="/search.xhtml" action="#{projectSearch.search}"
+            value="Search more"
+            rendered="#{suggestProject.isProjectNull()}">
+            <f:param name="query" value="#{suggestProject.query}"/>
+          </s:link>
+        </rich:autocomplete>
+      </h:form>
+      <ul class="header__main-nav__menu">
         <li>
-          <s:link id="glossary_link" view="/glossary/view.xhtml"
-            propagation="none">#{messages['jsf.Glossary']}</s:link>
+          <s:link id="projects_link" view="/project/home.xhtml"
+            propagation="none">#{messages['jsf.Projects']}
+            <i class="is-hidden--m-up l--float-right i--inline i--project"></i>
+          </s:link>
         </li>
-      </s:fragment>
+        <li>
+          <s:link id="version-groups_link" view="/version-group/home.xhtml"
+            propagation="none">#{messages['jsf.Groups']}
+            <i class="is-hidden--m-up l--float-right i--inline i--group"></i>
+          </s:link>
+        </li>
+        <li>
+          <s:link id="languages_link" view="/language/home.xhtml"
+            propagation="none">#{messages['jsf.Languages']}
+            <i class="is-hidden--m-up l--float-right i--inline i--language"></i>
+          </s:link>
+        </li>
+        <s:fragment rendered="#{identity.loggedIn}">
+          <li>
+            <s:link id="glossary_link" view="/glossary/view.xhtml"
+              propagation="none">#{messages['jsf.Glossary']}
+              <i
+                class="is-hidden--m-up l--float-right i--inline i--glossary"></i>
+            </s:link>
+          </li>
+        </s:fragment>
 
-      <li>
-        <s:link id="help_link" view="/help/view.xhtml"
-          propagation="none">#{messages['jsf.Help']}</s:link>
-      </li>
-    </ul>
+        <li>
+          <s:link id="help_link" view="/help/view.xhtml"
+            propagation="none">#{messages['jsf.Help']}
+            <i class="is-hidden--m-up l--float-right i--inline i--help"></i>
+          </s:link>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <s:fragment
@@ -94,26 +101,30 @@
         <li>
           <s:link id="dashboard" view="/dashboard/home.xhtml"
             propagation="none">
-            <i class="i i--user"></i> #{messages['jsf.Dashboard']}
+            #{messages['jsf.Dashboard']} <i
+            class="l--float-right i--inline i--dashboard"></i>
           </s:link>
         </li>
         <li>
           <s:link id="profile" view="/profile/view.xhtml" propagation="none">
-            <i class="i i--settings"></i> #{messages['jsf.Settings']}
+            #{messages['jsf.Settings']} <i
+            class="l--float-right i--inline i--settings"></i>
           </s:link>
         </li>
         <s:fragment rendered="#{s:hasRole('admin')}">
           <li>
             <s:link id="administration" view="/admin/home.xhtml"
               propagation="none">
-              <i class="i i--user"></i> #{messages['jsf.Administration']}
+              #{messages['jsf.Administration']} <i
+              class="l--float-right i--inline i--admin"></i>
             </s:link>
           </li>
         </s:fragment>
         <li>
           <s:link id="right_menu_sign_out_link" view="/account/logout.seam"
             propagation="none">
-            <i class="i i--cancel"></i> #{messages['jsf.Logout']}
+            #{messages['jsf.Logout']} <i
+            class="l--float-right i--inline i--logout"></i>
           </s:link>
         </li>
       </ul>

@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -46,10 +48,6 @@ public class ProjectSearch implements Serializable {
     @Getter
     private int resultSize;
 
-    @Getter
-    @Setter
-    private boolean includeObsolete;
-
     @In
     private ProjectDAO projectDAO;
 
@@ -63,9 +61,15 @@ public class ProjectSearch implements Serializable {
             this.currentPage = page;
     }
 
-    public List<HProject> suggestProjects(String query) {
+    public List<SearchResult> suggestProjects(String query) {
+        searchQuery = query;
         try {
-            return projectDAO.searchQuery(query, 5, 0);
+            List<SearchResult> result = Lists.newArrayList();
+            for (HProject project : projectDAO.searchQuery(query, 5, 0)) {
+                result.add(new SearchResult(project, query));
+            }
+            result.add(new SearchResult(query));
+            return result;
         } catch (ParseException pe) {
             return Lists.newArrayList();
         }
@@ -95,5 +99,22 @@ public class ProjectSearch implements Serializable {
             });
         }
         resultSize = searchResults.size();
+    }
+
+    @AllArgsConstructor
+    public class SearchResult {
+        @Getter
+        private HProject project;
+
+        @Getter
+        private String query;
+
+        public SearchResult(String query) {
+            this.query = query;
+        }
+
+        public boolean isProjectNull() {
+            return project == null;
+        }
     }
 }
