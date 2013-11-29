@@ -127,8 +127,8 @@
               </ul>
             </div>
             <div class="g__item w--1-2 txt--align-right">
-              <p class="txt--meta"><h:outputText
-                value="#{messages['jsf.CopyrightNotice']}" escape="false"/>
+              <p class="txt--meta">
+                <h:outputText value="#{messages['jsf.RunningVersionInfo']} | #{messages['jsf.CopyrightNotice']}" escape="false"/>
               </p>
             </div>
           </div>
@@ -136,11 +136,7 @@
       </div>
     </footer>
 
-    <ui:include src="piwik.xhtml"/>
-
-    <script type="text/javascript"
-      src="#{applicationConfiguration.webAssetsUrl}/assets/js/script.min.js"/>
-
+    <ui:include src="scripts.xhtml"/>
   </h:body>
   </html>
 </f:view>
